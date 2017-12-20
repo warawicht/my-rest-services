@@ -19,17 +19,16 @@ node {
    stage('Archive') {
         archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
    }
-   stage('Alpha') {
-        sh "/opt/alpha/kill.sh"
-        sh 'rm /opt/alpha/*.jar'
-        sh 'cp target/*.jar /opt/alpha/'
-        withEnv(['BUILD_ID=dontKillMe']) {
-            //sh '/opt/alpha/start.sh &'
-            sh "BUILD_ID=dontKillMe nohup java -Dserver.port=9001 -jar /opt/alpha/my-rest-services-*.jar >> /opt/alpha/nohup.out 2>&1 &"
-        }
+   stage('PET') {
+        //sh "ssh root@sith 'pgrep -f my-rest-services* | xargs kill -9'"
+        sh "ssh root@sith '/opt/pet/kill.sh'"
+        sh "ssh root@sith 'rm -f /opt/pet/my-rest-services-*.jar'"
+        sh "scp target/*.jar root@sith:/opt/pet/"
+        sh "ssh root@sith 'nohup java -jar /opt/pet/my-rest-services-*.jar >> /opt/pet/nohup.out 2>&1 &'"
+        sleep 10
    }
    stage('QA') {
-        echo 'QA'
+        sh 'newman run /var/lib/jenkins/workspace/my-rest-services/my-rest-services.postman_collection.json'
    }
    stage('Production') {
         echo 'Production'
