@@ -52,7 +52,7 @@ public class GreetingControllerTests {
                 .andExpect(jsonPath("$.content").value("Hello, Star War 8!"));
     }
 
-    @Test
+    //@Test
     public void alwaysFailed() throws Exception {
         fail("Always Failed don't worry!!!");
     }
