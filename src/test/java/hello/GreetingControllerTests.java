@@ -53,8 +53,8 @@ public class GreetingControllerTests {
     }
 
     @Test
-    public void alwayFailed() throws Exception {
-        fail("Alway Failed don't worry!!!");
+    public void alwaysFailed() throws Exception {
+        fail("Always Failed don't worry!!!");
     }
 
 }
