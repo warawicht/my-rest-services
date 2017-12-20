@@ -15,6 +15,7 @@
  */
 package hello;
 
+import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -49,6 +50,11 @@ public class GreetingControllerTests {
         this.mockMvc.perform(get("/greeting").param("name", "Star War 8"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").value("Hello, Star War 8!"));
+    }
+
+    @Test
+    public void alwayFailed() throws Exception {
+        fail("Alway Failed don't worry!!!");
     }
 
 }
