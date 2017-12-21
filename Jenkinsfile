@@ -31,6 +31,11 @@ node {
         sh 'newman run /var/lib/jenkins/workspace/my-rest-services/my-rest-services.postman_collection.json'
    }
    stage('Production') {
-        echo 'Production'
+        input 'Publish to PRODUCTION'
+        sh "ssh root@stromtrooper '/opt/prod/kill.sh'"
+        sh "ssh root@stromtrooper 'rm -f /opt/prod/my-rest-services-*.jar'"
+        sh "scp target/*.jar root@stromtrooper:/opt/prod/"
+        sh "ssh root@stromtrooper 'nohup java -jar /opt/prod/my-rest-services-*.jar >> /opt/prod/nohup.out 2>&1 &'"
+        sleep 10
    }
 }
